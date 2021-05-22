@@ -1,13 +1,42 @@
-const HomePage = () => {
+import path from "path";
+import fs from "fs/promises";
+import Link from "next/link";
+
+const HomePage = ({ products }) => {
   return (
     <div>
       <ul>
-        <li>Product 1</li>
-        <li>Product 2</li>
-        <li>Product 3</li>
+        {products.map((product) => (
+          <li key={product.id}>
+            <Link href={`/products/${product.id}`}>{product.title}</Link>
+          </li>
+        ))}
       </ul>
     </div>
   );
 };
 
+export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
+  const jsonData = await fs.readFile(filePath);
+
+  const data = JSON.parse(jsonData);
+
+  if (!data) {
+    return {
+      redirect: {
+        destination: "/no-data",
+      },
+    };
+  }
+
+  if (data.products.length === 0) {
+    return { notFound: true };
+  }
+  return {
+    props: {
+      products: data.products,
+    },
+  };
+}
 export default HomePage;
