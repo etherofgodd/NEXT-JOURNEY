@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 import path from "path";
 import fs from "fs/promises";
 import Link from "next/link";
 
 const HomePage = ({ products }) => {
+=======
+import EventList from "../components/events/event-list";
+import { getFeaturedEvents } from "../helpers/api-utils";
+
+const HomePage = (props) => {
+  const { featuredEvents } = props;
+
+>>>>>>> newbranch
   return (
     <div>
       <ul>
@@ -16,6 +25,7 @@ const HomePage = ({ products }) => {
   );
 };
 
+<<<<<<< HEAD
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
@@ -39,4 +49,17 @@ export async function getStaticProps() {
     },
   };
 }
+=======
+export async function getStaticProps(context) {
+  const featuredEvents = await getFeaturedEvents();
+
+  return {
+    props: {
+      featuredEvents,
+    },
+    revalidate: 1800,
+  };
+}
+
+>>>>>>> newbranch
 export default HomePage;
