@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Head from "next/head";
 import EventList from "../../components/events/event-list";
 import ResultsTitle from "../../components/events/results-title";
 import Button from "../../components/ui/button";
@@ -6,15 +6,24 @@ import ErrorAlert from "../../components/ui/error-alert";
 import { getFilteredEvents } from "../../helpers/api-utils";
 
 const FilteredEventPage = ({ hasError, filteredEvents, date_ }) => {
-  const router = useRouter();
-
   // if (!filterData) {
   //   return <p className="center">Loading</p>;
   // }
 
+  let pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${date_.month}/${date_.year}`}
+      />
+    </Head>
+  );
+
   if (hasError) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid Filter</p>
         </ErrorAlert>
@@ -30,6 +39,7 @@ const FilteredEventPage = ({ hasError, filteredEvents, date_ }) => {
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter</p>
         </ErrorAlert>
@@ -42,6 +52,7 @@ const FilteredEventPage = ({ hasError, filteredEvents, date_ }) => {
 
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={filteredEvents} />
     </>
