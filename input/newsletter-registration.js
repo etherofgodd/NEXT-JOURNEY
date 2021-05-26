@@ -1,12 +1,23 @@
+import { useRef } from "react";
 import styles from "./newsletter-registration.module.css";
+import { toast } from "react-toastify";
 
 function NewsletterRegistration() {
-  function registrationHandler(event) {
-    event.preventDefault();
+  const emailInputRef = useRef();
 
-    // fetch user input (state or refs)
-    // optional: validate input
-    // send valid data to API
+  async function registrationHandler(e) {
+    e.preventDefault();
+
+    const email = emailInputRef.current.value;
+    const response = await fetch("/api/newsletter", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    data && toast.dark(data.message);
   }
 
   return (
@@ -19,6 +30,7 @@ function NewsletterRegistration() {
             id="email"
             placeholder="Your email"
             aria-label="Your email"
+            ref={emailInputRef}
           />
           <button>Register</button>
         </div>

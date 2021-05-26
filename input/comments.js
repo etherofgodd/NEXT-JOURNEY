@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CommentList from "./comment-list";
 import NewComment from "./new-comment";
 import styles from "./comments.module.css";
+import { toast } from "react-toastify";
 
 function Comments(props) {
   const { eventId } = props;
 
   const [showComments, setShowComments] = useState(false);
-
+  const [comments, setComments] = useState([]);
+  useEffect(() => {
+    if (showComments) {
+      fetch("/api/comments/" + eventId)
+        .then((res) => res.json())
+        .then((data) => {
+          setComments(data.comments);
+        });
+    }
+  }, [showComments]);
   function toggleCommentsHandler() {
     setShowComments((prevStatus) => !prevStatus);
   }
 
-  function addCommentHandler(commentData) {
-    // send data to API
+  async function addCommentHandler(commentData) {
+    const response = await fetch("/api/comments/" + eventId, {
+      method: "POST",
+      body: JSON.stringify(commentData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    toast.dark(data.message);
   }
 
   return (
@@ -23,7 +42,7 @@ function Comments(props) {
         {showComments ? "Hide" : "Show"} Comments
       </button>
       {showComments && <NewComment onAddComment={addCommentHandler} />}
-      {showComments && <CommentList />}
+      {showComments && <CommentList items={comments} />}
     </section>
   );
 }
