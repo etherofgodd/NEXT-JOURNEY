@@ -23,7 +23,7 @@ async function handler(req, res) {
 
     let collection = "newsletter";
     try {
-      await insertDocument(client, collection, email);
+      await insertDocument(client, collection, { email });
       await client.close();
     } catch (error) {
       res.status(500).json({

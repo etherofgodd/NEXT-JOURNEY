@@ -1,23 +1,59 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import styles from "./newsletter-registration.module.css";
 import { toast } from "react-toastify";
+import NotificationContext from "../store/notification-context";
 
 function NewsletterRegistration() {
   const emailInputRef = useRef();
+  const notifCtx = useContext(NotificationContext);
 
   async function registrationHandler(e) {
     e.preventDefault();
 
     const email = emailInputRef.current.value;
-    const response = await fetch("/api/newsletter", {
-      method: "POST",
-      body: JSON.stringify({ email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+
+    notifCtx.showNotification({
+      title: "Signing Up",
+      message: "Registering for a news letter",
+      status: "pending",
     });
-    const data = await response.json();
-    data && toast.dark(data.message);
+    toast.info("Operation Pending");
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.dark("Successful");
+        notifCtx.showNotification({
+          title: "Success!",
+          message: "Registeration Successfull",
+          status: "success",
+        });
+      } else {
+        toast.error("Error registering");
+        notifCtx.showNotification({
+          title: "ERROR!",
+          message: "Registeration ERROR",
+          status: "error",
+        });
+      }
+    } catch (error) {
+      if (error) {
+        toast.error(error.message);
+        notifCtx.showNotification({
+          title: "ERROR!",
+          message: error.message || "Registeration ERROR",
+          status: "error",
+        });
+      }
+    }
   }
 
   return (
