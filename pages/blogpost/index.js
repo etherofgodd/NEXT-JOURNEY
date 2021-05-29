@@ -1,6 +1,5 @@
-import FeaturedPost from "../components/home/featured-posts";
-import Hero from "../components/home/hero";
-import { getFeaturedPost } from "../helpers/post-utils";
+import AllPosts from "../../components/post/all-post";
+import { getAllPosts } from "../../helpers/post-utils";
 
 // const dummy_post = [
 //   {
@@ -45,23 +44,17 @@ import { getFeaturedPost } from "../helpers/post-utils";
 //   },
 // ];
 
-const HomePage = ({ posts }) => {
-  return (
-    <>
-      <Hero />
-      <FeaturedPost post={posts} />
-    </>
-  );
+const AllPostPage = ({ posts }) => {
+  return <AllPosts posts={posts} />;
 };
 
 export function getStaticProps() {
-  const featuredPosts = getFeaturedPost();
+  const allPosts = getAllPosts();
 
   return {
     props: {
-      posts: featuredPosts,
+      posts: allPosts,
     },
   };
 }
-
-export default HomePage;
+export default AllPostPage;
