@@ -1,8 +1,17 @@
+import Head from "next/head";
 import PostContent from "../../components/post/post-content";
 import { getPostData, getPostsFiles } from "../../helpers/post-utils";
 
 const BlogPostPage = ({ post }) => {
-  return <PostContent post={post} />;
+  return (
+    <>
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.excerpt} />
+      </Head>
+      <PostContent post={post} />
+    </>
+  );
 };
 
 export function getStaticProps(context) {

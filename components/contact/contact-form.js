@@ -21,7 +21,9 @@ function ContactForm() {
     const data = await response.json();
 
     if (response.ok) {
-      toast.dark("SuccessFully saved");
+      toast.dark("message sent successfully.");
+    } else {
+      toast.dark("Can't send message");
     }
   }
 

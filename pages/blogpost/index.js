@@ -1,3 +1,4 @@
+import Head from "next/head";
 import AllPosts from "../../components/post/all-post";
 import { getAllPosts } from "../../helpers/post-utils";
 
@@ -45,7 +46,18 @@ import { getAllPosts } from "../../helpers/post-utils";
 // ];
 
 const AllPostPage = ({ posts }) => {
-  return <AllPosts posts={posts} />;
+  return (
+    <>
+      <Head>
+        <title>All Post</title>
+        <meta
+          name="description"
+          content="A list of all programming articles."
+        />
+      </Head>
+      <AllPosts posts={posts} />
+    </>
+  );
 };
 
 export function getStaticProps() {

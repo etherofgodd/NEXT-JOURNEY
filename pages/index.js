@@ -1,3 +1,4 @@
+import Head from "next/head";
 import FeaturedPost from "../components/home/featured-posts";
 import Hero from "../components/home/hero";
 import { getFeaturedPost } from "../helpers/post-utils";
@@ -48,6 +49,10 @@ import { getFeaturedPost } from "../helpers/post-utils";
 const HomePage = ({ posts }) => {
   return (
     <>
+      <Head>
+        <title>Ether's Space</title>
+        <meta name="description" content="Post about programming and web dev" />
+      </Head>
       <Hero />
       <FeaturedPost post={posts} />
     </>
