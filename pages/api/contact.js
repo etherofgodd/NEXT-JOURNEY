@@ -24,9 +24,8 @@ export default async function handler(req, res) {
       message,
     };
 
-    console.log(newMessage);
-    let uri =
-      "mongodb+srv://admin:YV6JllNGxoya4Jbl@cluster0.eg3qi.mongodb.net/EthersSpace?retryWrites=true&w=majority";
+    let uri = `mongodb+srv://admin:${process.env.mongo_password}@cluster0.eg3qi.mongodb.net/${process.env.mongo_db}?retryWrites=true&w=majority`;
+    // "mongodb+srv://admin:YV6JllNGxoya4Jbl@cluster0.eg3qi.mongodb.net/EthersSpace?retryWrites=true&w=majority",
 
     let client;
     try {
